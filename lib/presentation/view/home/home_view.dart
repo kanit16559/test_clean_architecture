@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:test_clean_architecture/domain/entities/home/menu_entity.dart';
 import 'package:test_clean_architecture/presentation/view/home/home_provider.dart';
+import '../../widgets/home/appbar_widget.dart';
+import '../../widgets/home/iconmenutype_widget.dart';
 import 'state/home_state.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../widgets/home/menuitem_widget.dart';
 
 class HomeView extends ConsumerStatefulWidget {
@@ -12,7 +15,8 @@ class HomeView extends ConsumerStatefulWidget {
   ConsumerState createState() => _HomeViewState();
 }
 
-class _HomeViewState extends ConsumerState<HomeView> {
+class _HomeViewState extends ConsumerState<HomeView> with TickerProviderStateMixin {
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -21,10 +25,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
-    final controller = ref.read(homePageStateProvider.notifier);
-    // final controller2 = ref.read(homePageStateProvider.notifier);
     return Scaffold(
       backgroundColor: const Color(0xffCFD6E0),
       body: SafeArea(
@@ -33,19 +36,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.dashboard, color: Colors.blue),
-                  const SizedBox(width: 8),
-                  const Text("Cashier"),
-                  IconButton(
-                    icon: const Icon(Icons.shopping_bag, color: Colors.blue),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
+              const AppBarWidget(),
+              const SizedBox(height: 16.0),
               TextFormField(
-                controller: controller.textSearchController,
+                // controller: controller.textSearchController,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search),
                   hintText: "Search...",
@@ -57,18 +51,19 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   fillColor: Colors.white,
                 ),
                 onChanged: (value){
-
+                  ref.read(homePageStateProvider.notifier).getSearchMenu(value);
+                  // controller.getSearchMenu(value);
                 },
               ),
-              SizedBox(height: 16.0),
-              Row(
+              const SizedBox(height: 16.0),
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CategoryIcon(icon: Icons.fastfood),
-                  CategoryIcon(icon: Icons.local_pizza),
-                  CategoryIcon(icon: Icons.local_dining),
-                  CategoryIcon(icon: Icons.local_cafe),
-                  CategoryIcon(icon: Icons.more_horiz),
+                  IconMenuTypeWidget(menuTypeId: 1, icon: FontAwesomeIcons.burger,),
+                  IconMenuTypeWidget(menuTypeId: 2, icon: FontAwesomeIcons.pizzaSlice),
+                  IconMenuTypeWidget(menuTypeId: 3, icon: FontAwesomeIcons.breadSlice),
+                  IconMenuTypeWidget(menuTypeId: 4, icon: FontAwesomeIcons.hotdog),
+                  IconMenuTypeWidget(menuTypeId: 5, icon: FontAwesomeIcons.drumstickBite),
                 ],
               ),
               const SizedBox(height: 16.0),
@@ -94,6 +89,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     case HomeStatus.loading:
                     case HomeStatus.initial:
                       return const Expanded(child: Center(child: CircularProgressIndicator()));
+                    case HomeStatus.empty:
+                      return const Expanded(
+                        child: Center(
+                          child: Text("Not Found")
+                        )
+                      );
                     case HomeStatus.failure:
                       return const Expanded(child: Center(child: Text("Error!!")));
                     case HomeStatus.success:
@@ -108,7 +109,29 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           // padding: const EdgeInsets.all(0), // padding around the grid
                           itemCount: menuList.length, // total number of it
                           itemBuilder: (BuildContext context, int index) {
-                            return MenuItemWidget(menu: menuList[index],);
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(2.1, 0.0),
+                                end: Offset.zero,
+                              ).animate(CurvedAnimation(
+                                parent: AnimationController(
+                                  duration: const Duration(milliseconds: 1200),
+                                  vsync: this,
+                                )..forward(),
+                                curve: Curves.elasticOut,
+                              )),
+                              child: MenuItemWidget(menu: menuList[index],)
+                            );
+                            // return FadeTransition(
+                            //   opacity: CurvedAnimation(
+                            //     parent: AnimationController(
+                            //       duration: const Duration(milliseconds: 1500),
+                            //       vsync: this,
+                            //     )..forward(),
+                            //     curve: Curves.easeIn,
+                            //   ),
+                            //   child: MenuItemWidget(menu: menuList[index],)
+                            // );
                           },
 
                         ),
@@ -138,20 +161,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class CategoryIcon extends StatelessWidget {
-  final IconData icon;
-
-  CategoryIcon({required this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: 30.0,
-      child: Icon(icon, size: 30.0),
     );
   }
 }

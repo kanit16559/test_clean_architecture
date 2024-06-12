@@ -160,8 +160,22 @@ class _$MenuDao extends MenuDao {
   }
 
   @override
+  Future<List<MenuEntity>> getMenuByMenuType(int menuTypeId) async {
+    return _queryAdapter.queryList('SELECT * FROM menu WHERE menuTypeId = ?1',
+        mapper: (Map<String, Object?> row) => MenuEntity(
+            id: row['id'] as int?,
+            name: row['name'] as String?,
+            price: row['price'] as double?,
+            image: row['image'] as String?,
+            menuTypeId: row['menuTypeId'] as int?,
+            favorite:
+                row['favorite'] == null ? null : (row['favorite'] as int) != 0),
+        arguments: [menuTypeId]);
+  }
+
+  @override
   Future<List<MenuEntity>> getSearchMenu(String strSearch) async {
-    return _queryAdapter.queryList('SELECT * FROM menu WHERE name LIKE \'?1%\'',
+    return _queryAdapter.queryList('SELECT * FROM menu WHERE name LIKE ?1',
         mapper: (Map<String, Object?> row) => MenuEntity(
             id: row['id'] as int?,
             name: row['name'] as String?,
@@ -171,6 +185,24 @@ class _$MenuDao extends MenuDao {
             favorite:
                 row['favorite'] == null ? null : (row['favorite'] as int) != 0),
         arguments: [strSearch]);
+  }
+
+  @override
+  Future<List<MenuEntity>> getSearchMenuByMenuType(
+    int menuTypeId,
+    String strSearch,
+  ) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM menu WHERE menuTypeId = ?1 AND name LIKE ?2',
+        mapper: (Map<String, Object?> row) => MenuEntity(
+            id: row['id'] as int?,
+            name: row['name'] as String?,
+            price: row['price'] as double?,
+            image: row['image'] as String?,
+            menuTypeId: row['menuTypeId'] as int?,
+            favorite:
+                row['favorite'] == null ? null : (row['favorite'] as int) != 0),
+        arguments: [menuTypeId, strSearch]);
   }
 
   @override

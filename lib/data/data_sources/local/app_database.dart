@@ -5,7 +5,6 @@ import 'package:floor/floor.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:test_clean_architecture/data/data_sources/local/dao/menu_dao.dart';
 import 'package:test_clean_architecture/data/data_sources/local/dao/menutype_dao.dart';
-import 'package:test_clean_architecture/data/models/home/menutype_model.dart';
 import 'package:test_clean_architecture/domain/entities/home/menu_entity.dart';
 import 'package:test_clean_architecture/domain/entities/home/menutype_emtity.dart';
 

@@ -1,6 +1,6 @@
 import '../../../../domain/entities/home/menu_entity.dart';
 
-enum HomeStatus{ initial, loading, success, failure}
+enum HomeStatus{ initial, loading, success, failure, empty}
 
 HomeState initialHomeState = HomeState(
   menuState: MenuState()
@@ -8,16 +8,20 @@ HomeState initialHomeState = HomeState(
 
 class HomeState {
   final MenuState menuState;
+  final int menuTypeSelect;
 
   HomeState({
-    required this.menuState
+    required this.menuState,
+    this.menuTypeSelect = 0
   });
 
   HomeState copyWith({
     MenuState? menuState,
+    int? menuTypeSelect,
   }) {
     return HomeState(
       menuState: menuState ?? this.menuState,
+      menuTypeSelect: menuTypeSelect ?? this.menuTypeSelect,
     );
   }
 }
