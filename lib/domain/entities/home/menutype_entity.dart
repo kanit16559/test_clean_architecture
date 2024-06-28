@@ -6,7 +6,6 @@ class MenuTypeEntity extends Equatable {
   final int? id;
   final String? type;
 
-
   const MenuTypeEntity({
     this.id,
     this.type,

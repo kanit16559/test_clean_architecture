@@ -130,6 +130,7 @@ class HomeController extends StateNotifier<HomeState>{
     if(menuTypeId == 0){
       return _getSearchMenuUseCase.call(strSearch);
     }
+
     final pragma = GetSearchMenuByMenuTypeParam(
       menuTypeId,
       strSearch

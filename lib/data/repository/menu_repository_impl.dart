@@ -35,5 +35,4 @@ class MenuRepositoryImpl implements MenuRepository {
     return appDatabase.menuDAO.insertMenu(menuModel);
   }
 
- 
 }

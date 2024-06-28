@@ -18,7 +18,7 @@ final getMenuByMenuType = Provider((ref) => GetMenuByMenuTypeUseCase(menuReposit
 final getSearchMenu = Provider((ref) => GetSearchMenuUseCase(menuRepository: ref.read(menuRepositoryProvider)));
 final getSearchMenuByMenuType = Provider((ref) => GetSearchMenuByMenuTypeUseCase(menuRepository: ref.read(menuRepositoryProvider)));
 
-final homePageStateProvider = StateNotifierProvider<HomeController, HomeState>(
+final homePageStateProvider = StateNotifierProvider.autoDispose<HomeController, HomeState>(
   (ref) => HomeController(
     getMenuUseCase: ref.read(getMenu),
     getMenuByMenuTypeUseCase: ref.read(getMenuByMenuType),

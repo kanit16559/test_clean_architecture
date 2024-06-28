@@ -3,8 +3,9 @@ import 'package:floor/floor.dart';
 
 @Entity(tableName: 'menu',primaryKeys: ['id'])
 class MenuEntity extends Equatable {
-  final int? id;
+  final int?  id;
   final String? name;
+  final String? detail;
   final double? price;
   final String? image;
   final int? menuTypeId;
@@ -13,6 +14,7 @@ class MenuEntity extends Equatable {
   const MenuEntity({
     this.id,
     this.name,
+    this.detail,
     this.price,
     this.image,
     this.menuTypeId,
@@ -22,7 +24,7 @@ class MenuEntity extends Equatable {
   @override
   List<Object?> get props => [
     id,
-    name,
+    detail,
     price,
     image,
     menuTypeId,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../core/router/app_router_enum.dart';
+
 class AppBarWidget extends StatelessWidget {
   const AppBarWidget({super.key});
 
@@ -62,7 +64,10 @@ class AppBarWidget extends StatelessWidget {
             ),
             InkWell(
               onTap: (){
-
+                Navigator.pushNamed(
+                  context,
+                  AppRouteEnum.menuFavoriteView.name,
+                );
               },
               child: Container(
                 width: 50.0,

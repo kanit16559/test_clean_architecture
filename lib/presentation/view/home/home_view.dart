@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:test_clean_architecture/domain/entities/home/menu_entity.dart';
 import 'package:test_clean_architecture/presentation/view/home/home_provider.dart';
 import '../../widgets/home/appbar_widget.dart';
 import '../../widgets/home/iconmenutype_widget.dart';
+import '../../widgets/home/popup_widget.dart';
 import 'state/home_state.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../widgets/home/menuitem_widget.dart';
@@ -17,6 +19,8 @@ class HomeView extends ConsumerStatefulWidget {
 
 class _HomeViewState extends ConsumerState<HomeView> with TickerProviderStateMixin {
 
+
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -28,6 +32,9 @@ class _HomeViewState extends ConsumerState<HomeView> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+    // SchedulerBinding.instance.addPostFrameCallback((_) async {
+    //   print('============');
+    // });
     return Scaffold(
       backgroundColor: const Color(0xffCFD6E0),
       body: SafeArea(
@@ -84,7 +91,7 @@ class _HomeViewState extends ConsumerState<HomeView> with TickerProviderStateMix
               const SizedBox(height: 6.0),
               Consumer(
                 builder: (BuildContext context, WidgetRef refHome, Widget? widget){
-                  final menuState = ref.watch(homePageStateProvider).menuState;
+                  final menuState = refHome.watch(homePageStateProvider).menuState;
                   switch(menuState.status){
                     case HomeStatus.loading:
                     case HomeStatus.initial:
@@ -109,19 +116,22 @@ class _HomeViewState extends ConsumerState<HomeView> with TickerProviderStateMix
                           // padding: const EdgeInsets.all(0), // padding around the grid
                           itemCount: menuList.length, // total number of it
                           itemBuilder: (BuildContext context, int index) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(2.1, 0.0),
-                                end: Offset.zero,
-                              ).animate(CurvedAnimation(
-                                parent: AnimationController(
-                                  duration: const Duration(milliseconds: 1200),
-                                  vsync: this,
-                                )..forward(),
-                                curve: Curves.elasticOut,
-                              )),
-                              child: MenuItemWidget(menu: menuList[index],)
-                            );
+                            return MenuItemWidget(menu: menuList[index],);
+                            // return SlideTransition(
+                            //   position: Tween<Offset>(
+                            //     begin: const Offset(2.1, 2.0),
+                            //     end: Offset.zero,
+                            //   ).animate(CurvedAnimation(
+                            //     parent: AnimationController(
+                            //       duration: const Duration(milliseconds: 3000),
+                            //       vsync: this,
+                            //     )..forward(),
+                            //     curve: Curves.bounceInOut,
+                            //   )),
+                            //   child: MenuItemWidget(menu: menuList[index],)
+                            // );
+
+
                             // return FadeTransition(
                             //   opacity: CurvedAnimation(
                             //     parent: AnimationController(
@@ -163,4 +173,19 @@ class _HomeViewState extends ConsumerState<HomeView> with TickerProviderStateMix
       ),
     );
   }
+
+  test(){
+    print('');
+  }
+
+  Future showPopUp(){
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return const PopupWidget();
+      },
+    );
+  }
+
 }

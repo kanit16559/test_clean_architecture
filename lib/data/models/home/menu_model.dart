@@ -4,6 +4,7 @@ class MenuModel extends MenuEntity {
   const MenuModel({
     super.id,
     super.name,
+    super.detail,
     super.price,
     super.image,
     super.menuTypeId,
@@ -14,6 +15,7 @@ class MenuModel extends MenuEntity {
     return MenuModel(
       id: map['id'],
       name: map['name'] ?? "",
+      detail: map['name'] ?? "",
       price: map['price'] ?? 0,
       image: map['image'] ?? "",
       menuTypeId: map['menuTypeId'] ?? "",
@@ -25,6 +27,7 @@ class MenuModel extends MenuEntity {
     return MenuModel(
       id: menuEntity.id,
       name: menuEntity.name,
+      detail: menuEntity.detail,
       price: menuEntity.price,
       image: menuEntity.image,
       menuTypeId: menuEntity.menuTypeId,

@@ -1,4 +1,4 @@
-import '../../../domain/entities/home/menutype_emtity.dart';
+import '../../../domain/entities/home/menutype_entity.dart';
 
 
 class MenuTypeModel extends MenuTypeEntity {
